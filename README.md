@@ -1,6 +1,6 @@
 # InMemoryEntityProvider.TS
 
-![GitHub](https://img.shields.io/github/license/dipscope/InMemoryEntityProvider.TS) ![NPM](https://img.shields.io/npm/v/@dipscope/in-memory-entity-provider) ![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg) -->
+![GitHub](https://img.shields.io/github/license/dipscope/InMemoryEntityProvider.TS) ![NPM](https://img.shields.io/npm/v/@dipscope/in-memory-entity-provider) ![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)
 
 `InMemoryEntityProvider.TS` is an implementation of `EntityProvider` for `EntityStore.TS` package. You can find detailed information on the [project page](https://github.com/dipscope/EntityStore.TS).
 
