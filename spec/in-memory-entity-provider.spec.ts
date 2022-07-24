@@ -1,6 +1,5 @@
 import { EntitySet, EntityStore } from '@dipscope/entity-store';
 import { Inject, Property, Type } from '@dipscope/type-manager';
-
 import { InMemoryEntityProvider } from '../src';
 
 @Type()
@@ -41,7 +40,7 @@ describe('Entity set', () =>
         const userSet = specEntityStore.userSet;
         const user = new User('Dmitry');
         const addedUser = await userSet.add(user);
-        const foundUser = await userSet.where((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
+        const foundUser = await userSet.filter((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
 
         expect(addedUser).not.toBeNull();
         expect(foundUser).not.toBeNull();
@@ -59,7 +58,7 @@ describe('Entity set', () =>
         user.name = 'Alex';
 
         const updatedUser = await userSet.update(user);
-        const foundUser = await userSet.where((u, fe) => fe.eq(u.name, 'Alex')).findOne();
+        const foundUser = await userSet.filter((u, fe) => fe.eq(u.name, 'Alex')).findOne();
 
         expect(updatedUser).not.toBeNull();
         expect(foundUser).not.toBeNull();
@@ -71,7 +70,7 @@ describe('Entity set', () =>
         const userSet = specEntityStore.userSet;
         const user = new User('Dmitry');
         const addedUser = await userSet.save(user);
-        const foundAddedUser = await userSet.where((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
+        const foundAddedUser = await userSet.filter((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
 
         expect(addedUser).not.toBeNull();
         expect(foundAddedUser).not.toBeNull();
@@ -79,7 +78,7 @@ describe('Entity set', () =>
         user.name = 'Alex';
 
         const updatedUser = await userSet.save(user);
-        const foundUpdatedUser = await userSet.where((u, fe) => fe.eq(u.name, 'Alex')).findOne();
+        const foundUpdatedUser = await userSet.filter((u, fe) => fe.eq(u.name, 'Alex')).findOne();
 
         expect(updatedUser).not.toBeNull();
         expect(foundUpdatedUser).not.toBeNull();
@@ -95,7 +94,7 @@ describe('Entity set', () =>
         expect(addedUser).not.toBeNull();
 
         const removedUser = await userSet.remove(user);
-        const foundUser = await userSet.where((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
+        const foundUser = await userSet.filter((u, fe) => fe.eq(u.name, 'Dmitry')).findOne();
 
         expect(removedUser).not.toBeNull();
         expect(foundUser).toBeNull();
@@ -108,7 +107,7 @@ describe('Entity set', () =>
         const userX = new User('Dmitry');
         const userY = new User('Alex');
         const addedUsers = await userSet.bulkAdd([userX, userY]);
-        const foundUsers = await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
+        const foundUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
 
         expect(addedUsers.length).toBe(2);
         expect(foundUsers.length).toBe(2);
@@ -128,7 +127,7 @@ describe('Entity set', () =>
         userY.name = 'Roman';
 
         const updatedUsers = await userSet.bulkUpdate([userX, userY]);
-        const foundUsers = await userSet.where((u, fe) => fe.in(u.name, ['Victor', 'Roman'])).findAll();
+        const foundUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Victor', 'Roman'])).findAll();
 
         expect(updatedUsers.length).toBe(2);
         expect(foundUsers.length).toBe(2);
@@ -141,7 +140,7 @@ describe('Entity set', () =>
         const userX = new User('Dmitry');
         const userY = new User('Alex');
         const addedUsers = await userSet.bulkSave([userX, userY]);
-        const foundAddedUsers = await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
+        const foundAddedUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
 
         expect(addedUsers.length).toBe(2);
         expect(foundAddedUsers.length).toBe(2);
@@ -150,7 +149,7 @@ describe('Entity set', () =>
         userY.name = 'Roman';
 
         const updatedUsers = await userSet.bulkUpdate([userX, userY]);
-        const foundUpdatedUsers = await userSet.where((u, fe) => fe.in(u.name, ['Victor', 'Roman'])).findAll();
+        const foundUpdatedUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Victor', 'Roman'])).findAll();
 
         expect(updatedUsers.length).toBe(2);
         expect(foundUpdatedUsers.length).toBe(2);
@@ -166,9 +165,9 @@ describe('Entity set', () =>
 
         expect(addedUsers.length).toBe(2);
 
-        await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).update({ name: 'Victor' });
+        await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).update({ name: 'Victor' });
 
-        const updatedUsers = await userSet.where((u, fe) => fe.eq(u.name, 'Victor')).findAll();
+        const updatedUsers = await userSet.filter((u, fe) => fe.eq(u.name, 'Victor')).findAll();
 
         expect(updatedUsers.length).toBe(2);
     });
@@ -184,7 +183,7 @@ describe('Entity set', () =>
         expect(addedUsers.length).toBe(2);
 
         const removedUsers = await userSet.bulkRemove([userX, userY]);
-        const foundUsers = await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
+        const foundUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
 
         expect(removedUsers.length).toBe(2);
         expect(foundUsers.length).toBe(0);
@@ -200,9 +199,9 @@ describe('Entity set', () =>
 
         expect(addedUsers.length).toBe(2);
 
-        await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).remove();
+        await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).remove();
 
-        const foundUsers = await userSet.where((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
+        const foundUsers = await userSet.filter((u, fe) => fe.in(u.name, ['Dmitry', 'Alex'])).findAll();
 
         expect(foundUsers.length).toBe(0);
     });
@@ -250,9 +249,38 @@ describe('Entity set', () =>
 
         expect(addedUsers.length).toBe(3);
 
-        const filteredUsers = await userSet.where((u, fe) => fe.eq(u.name, 'Alex')).findAll();
+        const filteredUsers = await userSet.filter((u, fe) => fe.eq(u.name, 'Alex')).findAll();
 
         expect(filteredUsers.length).toBe(1);
         expect(filteredUsers.first()).toBe(userY);
+    });
+
+    it('should paginate existing entities', async () =>
+    {
+        const specEntityStore = new SpecEntityStore();
+        const userSet = specEntityStore.userSet;
+        const userX = new User('Dmitry');
+        const userY = new User('Alex');
+        const userZ = new User('Victor');
+        const addedUsers = await userSet.bulkAdd([userX, userY, userZ]);
+
+        expect(addedUsers.length).toBe(3);
+
+        const paginatedUsers = await userSet.paginate(p => p.limit(2)).findAll();
+
+        expect(paginatedUsers.totalLength).toBe(3);
+        expect(paginatedUsers.length).toBe(2);
+        expect(paginatedUsers.at(0)).toBe(userX);
+        expect(paginatedUsers.at(1)).toBe(userY);
+        expect(paginatedUsers.hasNextPage()).toBeTrue();
+        expect(paginatedUsers.hasPrevPage()).toBeFalse();
+
+        const nextPaginatedUsers = await paginatedUsers.nextPage();
+
+        expect(nextPaginatedUsers.totalLength).toBe(3);
+        expect(nextPaginatedUsers.length).toBe(1);
+        expect(nextPaginatedUsers.at(0)).toBe(userZ);
+        expect(nextPaginatedUsers.hasNextPage()).toBeFalse();
+        expect(nextPaginatedUsers.hasPrevPage()).toBeTrue();
     });
 });

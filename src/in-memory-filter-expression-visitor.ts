@@ -1,5 +1,4 @@
 import isString from 'lodash/isString';
-
 import { Entity, EntityFilterFn, FilterExpressionVisitor } from '@dipscope/entity-store';
 import { AndFilterExpression, ContainsFilterExpression, EndsWithFilterExpression } from '@dipscope/entity-store';
 import { EqFilterExpression, GteFilterExpression, GtFilterExpression, InFilterExpression } from '@dipscope/entity-store';

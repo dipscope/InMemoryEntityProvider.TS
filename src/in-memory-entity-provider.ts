@@ -1,13 +1,13 @@
 import assign from 'lodash/assign';
 import isNil from 'lodash/isNil';
-
-import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand } from '@dipscope/entity-store';
+import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection } from '@dipscope/entity-store';
 import { BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand } from '@dipscope/entity-store';
 import { BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand } from '@dipscope/entity-store';
 import { Entity, EntityCollection, EntityFilterFn, EntityProvider, KeyValue, Nullable } from '@dipscope/entity-store';
 import { TypeMetadata } from '@dipscope/type-manager';
-
 import { InMemoryFilterExpressionVisitor } from './in-memory-filter-expression-visitor';
+import { InMemoryPaginateExpressionVisitor } from './in-memory-paginate-expression-visitor';
+import { InMemoryPaginatedEntityCollection } from './in-memory-paginated-entity-collection';
 import { InMemorySortExpressionVisitor } from './in-memory-sort-expression-visitor';
 
 /**
@@ -20,32 +20,40 @@ export class InMemoryEntityProvider implements EntityProvider
     /**
      * Entity collection map.
      *
-     * @type {Map<TypeMetadata<Entity>, EntityCollection<Entity>>}
+     * @type {Map<TypeMetadata<any>, EntityCollection<any>>}
      */
-    private readonly entityCollectionMap: Map<TypeMetadata<Entity>, EntityCollection<Entity>>;
+    private readonly entityCollectionMap: Map<TypeMetadata<any>, EntityCollection<any>>;
 
     /**
      * In memory filter expression visitor.
      *
      * @type {InMemoryFilterExpressionVisitor<Entity>}
      */
-    private readonly inMemoryFilterExpressionVisitor: InMemoryFilterExpressionVisitor<Entity>;
+    private readonly inMemoryFilterExpressionVisitor: InMemoryFilterExpressionVisitor<any>;
 
     /**
      * In memory sort expression visitor.
      *
      * @type {InMemorySortExpressionVisitor<Entity>}
      */
-    private readonly inMemorySortExpressionVisitor: InMemorySortExpressionVisitor<Entity>;
+    private readonly inMemorySortExpressionVisitor: InMemorySortExpressionVisitor<any>;
+
+    /**
+     * In memory paginate expression visitor.
+     *
+     * @type {InMemoryPaginateExpressionVisitor<Entity>}
+     */
+    private readonly inMemoryPaginateExpressionVisitor: InMemoryPaginateExpressionVisitor<any>;
 
     /**
      * Constructor.
      */
     public constructor()
     {
-        this.entityCollectionMap = new Map<TypeMetadata<Entity>, EntityCollection<Entity>>();
-        this.inMemoryFilterExpressionVisitor = new InMemoryFilterExpressionVisitor<Entity>();
-        this.inMemorySortExpressionVisitor = new InMemorySortExpressionVisitor<Entity>();
+        this.entityCollectionMap = new Map<TypeMetadata<any>, EntityCollection<any>>();
+        this.inMemoryFilterExpressionVisitor = new InMemoryFilterExpressionVisitor<any>();
+        this.inMemorySortExpressionVisitor = new InMemorySortExpressionVisitor<any>();
+        this.inMemoryPaginateExpressionVisitor = new InMemoryPaginateExpressionVisitor<any>();
 
         return;
     }
@@ -245,7 +253,7 @@ export class InMemoryEntityProvider implements EntityProvider
      *
      * @returns {Promise<EntityCollection<TEntity>>} Queried entity collection.
      */
-    public async executeBulkQueryCommand<TEntity extends Entity>(bulkQueryCommand: BulkQueryCommand<TEntity>): Promise<EntityCollection<TEntity>>
+    public async executeBulkQueryCommand<TEntity extends Entity>(bulkQueryCommand: BulkQueryCommand<TEntity>): Promise<PaginatedEntityCollection<TEntity>>
     {
         const typeMetadata = bulkQueryCommand.entityInfo.typeMetadata;
         const entityCollection = this.defineBrowsedEntityCollection(typeMetadata, bulkQueryCommand);
@@ -322,7 +330,7 @@ export class InMemoryEntityProvider implements EntityProvider
      */
     private defineEntityCollection<TEntity extends Entity>(typeMetadata: TypeMetadata<TEntity>): EntityCollection<TEntity>
     {
-        let entityCollection = this.entityCollectionMap.get(typeMetadata) as EntityCollection<TEntity>;
+        let entityCollection = this.entityCollectionMap.get(typeMetadata);
 
         if (isNil(entityCollection))
         {
@@ -342,7 +350,7 @@ export class InMemoryEntityProvider implements EntityProvider
      *
      * @returns {EntityCollection<TEntity>} Browsed entity collection for provided type metadata.
      */
-    private defineBrowsedEntityCollection<TEntity extends Entity>(typeMetadata: TypeMetadata<TEntity>, browseCommand: BrowseCommand<any, any>): EntityCollection<TEntity>
+    private defineBrowsedEntityCollection<TEntity extends Entity>(typeMetadata: TypeMetadata<TEntity>, browseCommand: BrowseCommand<TEntity, any>): PaginatedEntityCollection<TEntity>
     {
         let entityCollection = this.defineEntityCollection(typeMetadata);
 
@@ -362,13 +370,12 @@ export class InMemoryEntityProvider implements EntityProvider
 
         if (!isNil(browseCommand.paginateExpression))
         {
-            const skip = browseCommand.paginateExpression.skip;
-            const take = browseCommand.paginateExpression.take;
-
-            entityCollection = entityCollection.paginate(take, skip);
+            const entityPaginateFn = browseCommand.paginateExpression.accept(this.inMemoryPaginateExpressionVisitor);
+            
+            return entityPaginateFn(entityCollection.toArray());
         }
-
-        return entityCollection;
+        
+        return new InMemoryPaginatedEntityCollection(entityCollection.toArray(), 0, entityCollection.length, 0);
     }
 
     /**

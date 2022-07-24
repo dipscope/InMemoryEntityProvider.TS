@@ -1,5 +1,4 @@
 import isNil from 'lodash/isNil';
-
 import { Entity, EntitySortFn, SortExpressionVisitor } from '@dipscope/entity-store';
 import { AscSortExpression, DescSortExpression } from '@dipscope/entity-store';
 
