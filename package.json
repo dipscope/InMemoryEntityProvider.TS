@@ -2,7 +2,7 @@
   "author": "DipScope authors and contributors",
   "dependencies": {
     "lodash": "^4.17.21",
-    "@dipscope/entity-store": "^1.0.0-beta.5"
+    "@dipscope/entity-store": "^1.0.0-beta.6"
   },
   "description": "In memory entity provider for entity store.",
   "devDependencies": {

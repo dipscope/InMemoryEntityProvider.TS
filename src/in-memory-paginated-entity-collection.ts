@@ -8,6 +8,13 @@ import { Entity, PaginatedEntityCollection } from '@dipscope/entity-store';
 export class InMemoryPaginatedEntityCollection<TEntity extends Entity> extends PaginatedEntityCollection<TEntity>
 {
     /**
+     * Total length of paginated entity collection if known.
+     *
+     * @type {number}
+     */
+    public readonly totalLength: number;
+
+    /**
      * Selected entities to paginate.
      * 
      * @type {ReadonlyArray<TEntity>}
@@ -45,8 +52,9 @@ export class InMemoryPaginatedEntityCollection<TEntity extends Entity> extends P
      */
     public constructor(selectedEntities: ReadonlyArray<TEntity>, pageIndex: number, pageLength: number, offset: number) 
     {
-        super(selectedEntities.length, selectedEntities.slice(offset + pageIndex * pageLength, (pageIndex + 1) * pageLength));
+        super(selectedEntities.slice(offset + pageIndex * pageLength, (pageIndex + 1) * pageLength), selectedEntities.length);
 
+        this.totalLength = selectedEntities.length;
         this.selectedEntities = selectedEntities;
         this.pageIndex = pageIndex;
         this.pageLength = pageLength;
