@@ -16,6 +16,12 @@ module.exports = {
         umdNamedDefine: true
     },
     externals: {
+        '@dipscope/type-manager': {
+            root: 'TypeManager',
+            amd: '@dipscope/type-manager',
+            commonjs2: '@dipscope/type-manager',
+            commonjs: '@dipscope/type-manager'
+        },
         '@dipscope/entity-store': {
             root: 'EntityStore',
             amd: '@dipscope/entity-store',
