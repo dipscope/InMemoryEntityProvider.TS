@@ -1,5 +1,4 @@
-import assign from 'lodash/assign';
-import isNil from 'lodash/isNil';
+import { assign, isNil } from 'lodash';
 import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection } from '@dipscope/entity-store';
 import { BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand } from '@dipscope/entity-store';
 import { BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand } from '@dipscope/entity-store';

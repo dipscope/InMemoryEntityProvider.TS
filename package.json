@@ -1,10 +1,10 @@
 {
   "author": "DipScope authors and contributors",
-  "dependencies": {
-    "lodash": "^4.17.21",
+  "description": "In memory entity provider for entity store.",
+  "peerDependencies": {
+    "lodash": "^4.17.0",
     "@dipscope/entity-store": "^1.0.0"
   },
-  "description": "In memory entity provider for entity store.",
   "devDependencies": {
     "@types/lodash": "^4.14.182",
     "@types/jasmine": "^3.6.3",
