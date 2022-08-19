@@ -3,6 +3,7 @@
   "description": "In memory entity provider for entity store.",
   "peerDependencies": {
     "lodash": "^4.17.0",
+    "@dipscope/type-manager": "^5.0.0",
     "@dipscope/entity-store": "^1.0.0"
   },
   "devDependencies": {
