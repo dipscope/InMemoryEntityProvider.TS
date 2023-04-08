@@ -36,7 +36,10 @@
     "plugin"
   ],
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "./dist/umd/index.js",
+  "module": "./dist/es5/index.js",
+  "es2015": "./dist/es2015/index.js",
+  "types": "./dist/types/index.d.ts",
   "name": "@dipscope/in-memory-entity-provider",
   "repository": {
     "type": "git",
@@ -52,6 +55,5 @@
     "test": "jasmine-ts --config=jasmine.json",
     "lint": "eslint . --ext .ts"
   },
-  "types": "index.d.ts",
   "version": "2.0.0-beta.0"
 }
