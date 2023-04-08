@@ -1,6 +1,9 @@
 {
   "author": "DipScope authors and contributors",
   "description": "In memory entity provider for entity store.",
+  "dependencies": {
+    "tslib": "^2.0.1"
+  },
   "peerDependencies": {
     "lodash": "^4.17.0",
     "@dipscope/type-manager": "^7.0.0-beta.0",
