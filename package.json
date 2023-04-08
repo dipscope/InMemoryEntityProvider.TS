@@ -3,8 +3,8 @@
   "description": "In memory entity provider for entity store.",
   "peerDependencies": {
     "lodash": "^4.17.0",
-    "@dipscope/type-manager": "^5.0.0",
-    "@dipscope/entity-store": "^1.0.0"
+    "@dipscope/type-manager": "^7.0.0-beta.0",
+    "@dipscope/entity-store": "^2.0.0-beta.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.182",
@@ -40,9 +40,12 @@
     "url": "https://github.com/dipscope/InMemoryEntityProvider.TS.git"
   },
   "scripts": {
-    "build": "npm run clean && npx webpack --config=webpack.config.js && npm run copy",
-    "clean": "shx rm -rf dist",
-    "copy": "shx cp CHANGELOG.md dist && shx cp LICENSE.md dist && shx cp package.json dist && shx cp README.md dist",
+    "build": "npm run build:clean && npm run build:types && npm run build:es5 && npm run build:es2015 && npm run build:umd",
+    "build:clean": "shx rm -rf dist",
+    "build:types": "tsc -p tsconfig/tsconfig.types.json",
+    "build:es5": "tsc -p tsconfig/tsconfig.es5.json",
+    "build:es2015": "tsc -p tsconfig/tsconfig.es2015.json",
+    "build:umd": "npx webpack --config=webpack.config.js",
     "test": "jasmine-ts --config=jasmine.json",
     "lint": "eslint . --ext .ts"
   },

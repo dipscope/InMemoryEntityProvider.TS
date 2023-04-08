@@ -1,8 +1,16 @@
 import { assign, isNil } from 'lodash';
-import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection } from '@dipscope/entity-store';
-import { BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand } from '@dipscope/entity-store';
-import { BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand } from '@dipscope/entity-store';
-import { Entity, EntityCollection, EntityFilterFn, EntityProvider, KeyValue, Nullable } from '@dipscope/entity-store';
+import {
+    AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection
+} from '@dipscope/entity-store';
+import {
+    BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand
+} from '@dipscope/entity-store';
+import {
+    BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand
+} from '@dipscope/entity-store';
+import {
+    Entity, EntityCollection, EntityFilterFn, EntityProvider, KeyValue, Nullable
+} from '@dipscope/entity-store';
 import { TypeMetadata } from '@dipscope/type-manager';
 import { InMemoryFilterExpressionVisitor } from './in-memory-filter-expression-visitor';
 import { InMemoryPaginateExpressionVisitor } from './in-memory-paginate-expression-visitor';
@@ -238,7 +246,7 @@ export class InMemoryEntityProvider implements EntityProvider
     {
         const typeMetadata = queryCommand.entityInfo.typeMetadata;
         const keyValues = queryCommand.keyValues;
-        const entityCollection = this.defineEntityCollection(typeMetadata);
+        const entityCollection = this.defineBrowsedEntityCollection(typeMetadata, queryCommand);
         const entityFilterFn = this.defineKeyValuesEntityFilterFn(typeMetadata, keyValues);
         const entity = entityCollection.find(entityFilterFn);
 
