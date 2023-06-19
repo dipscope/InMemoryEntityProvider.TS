@@ -1,16 +1,8 @@
 import { assign, isNil } from 'lodash';
-import {
-    AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection
-} from '@dipscope/entity-store';
-import {
-    BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand
-} from '@dipscope/entity-store';
-import {
-    BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand
-} from '@dipscope/entity-store';
-import {
-    Entity, EntityCollection, EntityFilterFn, EntityProvider, KeyValue, Nullable
-} from '@dipscope/entity-store';
+import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection } from '@dipscope/entity-store';
+import { BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand } from '@dipscope/entity-store';
+import { BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand } from '@dipscope/entity-store';
+import { Entity, EntityCollection, EntityFilterFn, EntityProvider, KeyValue, Nullable } from '@dipscope/entity-store';
 import { TypeMetadata } from '@dipscope/type-manager';
 import { InMemoryFilterExpressionVisitor } from './in-memory-filter-expression-visitor';
 import { InMemoryPaginateExpressionVisitor } from './in-memory-paginate-expression-visitor';
