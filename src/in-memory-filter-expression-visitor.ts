@@ -1,4 +1,3 @@
-import { isString } from 'lodash';
 import { Entity, EntityFilterFn, FilterExpressionVisitor } from '@dipscope/entity-store';
 import { AndFilterExpression, ContainsFilterExpression, EndsWithFilterExpression } from '@dipscope/entity-store';
 import { EqFilterExpression, GteFilterExpression, GtFilterExpression, InFilterExpression } from '@dipscope/entity-store';
@@ -196,7 +195,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = containsFilterExpression.value;
 
-            return isString(propertyValue) ? propertyValue.includes(value) : false;
+            return typeof propertyValue === 'string' ? propertyValue.includes(value) : false;
         };
     }
 
@@ -215,7 +214,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = notContainsFilterExpression.value;
 
-            return isString(propertyValue) ? !propertyValue.includes(value) : true;
+            return typeof propertyValue === 'string' ? !propertyValue.includes(value) : true;
         };
     }
 
@@ -234,7 +233,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = startsWithFilterExpression.value;
 
-            return isString(propertyValue) ? propertyValue.startsWith(value) : false;
+            return typeof propertyValue === 'string' ? propertyValue.startsWith(value) : false;
         };
     }
 
@@ -253,7 +252,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = notStartsWithFilterExpression.value;
 
-            return isString(propertyValue) ? !propertyValue.startsWith(value) : true;
+            return typeof propertyValue === 'string' ? !propertyValue.startsWith(value) : true;
         };
     }
 
@@ -272,7 +271,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = endsWithFilterExpression.value;
 
-            return isString(propertyValue) ? propertyValue.endsWith(value) : false;
+            return typeof propertyValue === 'string' ? propertyValue.endsWith(value) : false;
         };
     }
 
@@ -291,7 +290,7 @@ export class InMemoryFilterExpressionVisitor<TEntity extends Entity> implements 
             const propertyValue = propertyInfo.extractPropertyValue(entity);
             const value = notEndsWithFilterExpression.value;
 
-            return isString(propertyValue) ? !propertyValue.endsWith(value) : true;
+            return typeof propertyValue === 'string' ? !propertyValue.endsWith(value) : true;
         };
     }
 

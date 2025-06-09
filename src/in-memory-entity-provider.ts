@@ -1,4 +1,3 @@
-import { assign, isNil } from 'lodash';
 import { AddCommand, BatchRemoveCommand, BatchUpdateCommand, BrowseCommand, PaginatedEntityCollection } from '@dipscope/entity-store';
 import { BulkAddCommand, BulkQueryCommand, BulkRemoveCommand, BulkSaveCommand } from '@dipscope/entity-store';
 import { BulkUpdateCommand, QueryCommand, RemoveCommand, SaveCommand, UpdateCommand } from '@dipscope/entity-store';
@@ -116,9 +115,9 @@ export class InMemoryEntityProvider implements EntityProvider
         const entityCollection = this.defineEntityCollection(typeMetadata);
         const entity = entityCollection.find(e => e === commandEntity);
 
-        if (!isNil(entity))
+        if (entity !== undefined && entity !== null)
         {
-            assign(entity, commandEntity);
+            Object.assign(entity, commandEntity);
         }
 
         return commandEntity;
@@ -141,9 +140,9 @@ export class InMemoryEntityProvider implements EntityProvider
         {
             const entity = entityCollection.find(e => e === commandEntity);
 
-            if (!isNil(entity))
+            if (entity !== undefined && entity !== null)
             {
-                assign(entity, commandEntity);
+                Object.assign(entity, commandEntity);
             }
         }
 
@@ -165,7 +164,7 @@ export class InMemoryEntityProvider implements EntityProvider
 
         for (const entity of entityCollection)
         {
-            assign(entity, commandEntityPartial);
+            Object.assign(entity, commandEntityPartial);
         }
 
         return;
@@ -185,14 +184,14 @@ export class InMemoryEntityProvider implements EntityProvider
         const entityCollection = this.defineEntityCollection(typeMetadata);
         const entity = entityCollection.find(e => e === commandEntity);
 
-        if (isNil(entity))
+        if (entity === undefined || entity === null)
         {
             entityCollection.push(commandEntity);
 
             return commandEntity;
         }
 
-        assign(entity, commandEntity);
+        Object.assign(entity, commandEntity);
 
         return commandEntity;
     }
@@ -214,14 +213,14 @@ export class InMemoryEntityProvider implements EntityProvider
         {
             const entity = entityCollection.find(e => e === commandEntity);
 
-            if (isNil(entity))
+            if (entity === undefined || entity === null)
             {
                 entityCollection.push(commandEntity);
 
                 continue;
             }
 
-            assign(entity, commandEntity);
+            Object.assign(entity, commandEntity);
         }
 
         return commandEntityCollection;
@@ -331,7 +330,7 @@ export class InMemoryEntityProvider implements EntityProvider
     {
         let entityCollection = this.entityCollectionMap.get(typeMetadata);
 
-        if (isNil(entityCollection))
+        if (entityCollection === undefined || entityCollection === null)
         {
             entityCollection = new EntityCollection<TEntity>();
 
@@ -353,21 +352,21 @@ export class InMemoryEntityProvider implements EntityProvider
     {
         let entityCollection = this.defineEntityCollection(typeMetadata);
 
-        if (!isNil(browseCommand.filterExpression))
+        if (browseCommand.filterExpression !== undefined && browseCommand.filterExpression !== null)
         {
             const entityFilterFn = browseCommand.filterExpression.accept(this.inMemoryFilterExpressionVisitor);
 
             entityCollection = entityCollection.filter(entityFilterFn);
         }
 
-        if (!isNil(browseCommand.sortExpression))
+        if (browseCommand.sortExpression !== undefined && browseCommand.sortExpression !== null)
         {
             const entitySortFn = browseCommand.sortExpression.accept(this.inMemorySortExpressionVisitor);
 
             entityCollection = entityCollection.sort(entitySortFn);
         }
 
-        if (!isNil(browseCommand.paginateExpression))
+        if (browseCommand.paginateExpression !== undefined && browseCommand.paginateExpression !== null)
         {
             const entityPaginateFn = browseCommand.paginateExpression.accept(this.inMemoryPaginateExpressionVisitor);
             

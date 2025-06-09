@@ -1,4 +1,3 @@
-import { isNil } from 'lodash';
 import { Entity, EntitySortFn, SortExpressionVisitor } from '@dipscope/entity-store';
 import { AscSortExpression, DescSortExpression } from '@dipscope/entity-store';
 
@@ -21,7 +20,7 @@ export class InMemorySortExpressionVisitor<TEntity extends Entity> implements So
         return (x: TEntity, y: TEntity) =>
         {
             const parentSortExpression = ascSortExpression.parentSortExpression;
-            const parentSortResult = isNil(parentSortExpression) ? 0 : parentSortExpression.accept(this)(x, y);
+            const parentSortResult = (parentSortExpression === undefined || parentSortExpression === null) ? 0 : parentSortExpression.accept(this)(x, y);
 
             if (parentSortResult !== 0)
             {
@@ -58,7 +57,7 @@ export class InMemorySortExpressionVisitor<TEntity extends Entity> implements So
         return (x: TEntity, y: TEntity) =>
         {
             const parentSortExpression = descSortExpression.parentSortExpression;
-            const parentSortResult = isNil(parentSortExpression) ? 0 : parentSortExpression.accept(this)(x, y);
+            const parentSortResult = (parentSortExpression === undefined || parentSortExpression === null) ? 0 : parentSortExpression.accept(this)(x, y);
 
             if (parentSortResult !== 0)
             {
